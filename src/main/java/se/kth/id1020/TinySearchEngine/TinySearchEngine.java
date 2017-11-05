@@ -10,6 +10,7 @@ import java.util.List;
 
 public class TinySearchEngine implements TinySearchEngineBase {
     private IndexHandler indexHandler = new IndexHandler();
+    private QueryParser queryParser = new QueryParser(indexHandler);
 
     @Override
     public void preInserts() {}
@@ -23,13 +24,13 @@ public class TinySearchEngine implements TinySearchEngineBase {
 
     @Override
     public void postInserts() {
-
+        indexHandler.countTerms();
     }
 
     @Override
     public List<Document> search(String s) {
         try {
-            return QueryParser.parse(s, indexHandler);
+            return queryParser.parse(s);
         } catch(Exception e) {
             System.out.println(e.getMessage());
 
@@ -39,6 +40,7 @@ public class TinySearchEngine implements TinySearchEngineBase {
 
     @Override
     public String infix(String s) {
-        return null;
+
+        return queryParser.getInfix();
     }
 }
