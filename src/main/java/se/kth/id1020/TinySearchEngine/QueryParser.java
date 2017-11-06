@@ -131,22 +131,33 @@ public class QueryParser {
             return result;
         }
 
-        infixStringBuilder.append(" ORDERBY ");
+        infixStringBuilder.append(" ORDERBY");
+
         if(ordering[0].equalsIgnoreCase("popularity")) {
+            infixStringBuilder.append(" " + ordering[0].toUpperCase());
+
             if(ordering[1].equalsIgnoreCase("asc")) {
                 Collections.sort(result, new CompareByPopularity());
-                infixStringBuilder.append("POPULARITY ASC");
-            } else if(ordering[1].equalsIgnoreCase("desc")) {
-                Collections.sort(result, new CompareByPopularity().reversed());
-                infixStringBuilder.append("POPULARITY DESC");
+                infixStringBuilder.append(" " + ordering[1].toUpperCase());
             }
-        } else if(ordering[0].equalsIgnoreCase("relevance")) {
+
+            else if(ordering[1].equalsIgnoreCase("desc")) {
+                Collections.sort(result, new CompareByPopularity().reversed());
+                infixStringBuilder.append(" " + ordering[1].toUpperCase());
+            }
+        }
+
+        else if(ordering[0].equalsIgnoreCase("relevance")) {
+            infixStringBuilder.append(" " + ordering[0].toUpperCase());
+
             if(ordering[1].equalsIgnoreCase("asc")) {
                 result = list.entrySet().stream().sorted(Map.Entry.comparingByValue()).map(Map.Entry::getKey).collect(Collectors.toList());
-                infixStringBuilder.append("RELEVANCE ASC");
-            } else if(ordering[1].equalsIgnoreCase("desc")) {
+                infixStringBuilder.append(" " + ordering[1].toUpperCase());
+            }
+
+            else if(ordering[1].equalsIgnoreCase("desc")) {
                 result = list.entrySet().stream().sorted(Map.Entry.comparingByValue(Collections.reverseOrder())).map(Map.Entry::getKey).collect(Collectors.toList());
-                infixStringBuilder.append("RELEVANCE DESC");
+                infixStringBuilder.append(" " + ordering[1].toUpperCase());
             }
         }
 
